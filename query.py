@@ -96,6 +96,8 @@ def output(data, type):
     if type in ("amount","order","user"):
         list = []
         cols = ["日期","应用名称","应用id","AP代码","AP名称"]
+        for i in range(24):
+            cols.append(str(i))
         for row in data:
             col = {}
             col[cols[0]] = str(row[5])
@@ -104,7 +106,6 @@ def output(data, type):
             col[cols[3]] = row[2]
             col[cols[4]] = row[3]
             for i in range(24):
-                cols.append(str(i))
                 col[str(i)] = row[i+6]
             list.append(col)
     elif type == "province":
@@ -153,9 +154,9 @@ def output(data, type):
     else:
         book = load_workbook(writer.path)
         writer.book = book
-        sheet_names = book.sheetnames
+        sheet_names = writer.book.sheetnames
         if sheets[type] in sheet_names:#判断sheet是否存在，存在则先删除
-            del book[sheets[type]]
+            del writer.book[sheets[type]]
         df.to_excel(excel_writer=writer, sheet_name=sheets[type], index=None)
     writer.save()
 
